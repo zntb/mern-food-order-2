@@ -1,15 +1,38 @@
-import { createContext, useState, useEffect } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import axios from 'axios';
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = props => {
+  const [cartItems, setCartItems] = useState({});
   const url = 'http://localhost:5000';
   const [token, setToken] = useState('');
 
   const [food_list, setFoodList] = useState([]);
-  console.log(food_list);
+
+  const addToCart = itemId => {
+    if (!cartItems[itemId]) {
+      setCartItems(prev => ({ ...prev, [itemId]: 1 }));
+    } else {
+      setCartItems(prev => ({ ...prev, [itemId]: prev[itemId] + 1 }));
+    }
+  };
+
+  const removeFromCart = itemId => {
+    setCartItems(prev => ({ ...prev, [itemId]: prev[itemId] - 1 }));
+  };
+
+  const getTotalCartAmount = () => {
+    let totalAmount = 0;
+    for (const item in cartItems) {
+      if (cartItems[item] > 0) {
+        let itemInfo = food_list.find(product => product._id === item);
+        totalAmount += itemInfo.price * cartItems[item];
+      }
+    }
+    return totalAmount;
+  };
 
   const fetchFoodList = async () => {
     const response = await axios.get(url + '/api/food/list');
@@ -27,9 +50,14 @@ const StoreContextProvider = props => {
   }, []);
 
   const contextValue = {
+    food_list,
+    cartItems,
+    setCartItems,
+    addToCart,
+    removeFromCart,
+    getTotalCartAmount,
     url,
     token,
-    food_list,
     setToken,
   };
   return (
