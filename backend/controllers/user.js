@@ -10,7 +10,7 @@ const getAllUsers = async (req, res) => {
     res.json({ success: true, users });
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: 'Error' });
+    res.json({ success: false, message: 'Error getting users' });
   }
 };
 
@@ -25,7 +25,7 @@ const getUserById = async (req, res) => {
     res.json({ success: true, user });
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: 'Error' });
+    res.json({ success: false, message: 'Error getting user' });
   }
 };
 
@@ -49,7 +49,7 @@ const loginUser = async (req, res) => {
     res.json({ success: true, token });
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: 'Error' });
+    res.json({ success: false, message: 'Error logging in user' });
   }
 };
 
@@ -97,7 +97,7 @@ const registerUser = async (req, res) => {
     res.json({ success: true, token });
   } catch (error) {
     console.log(error);
-    res.json({ success: false, message: 'Error' });
+    res.json({ success: false, message: 'Error registering user' });
   }
 };
 
